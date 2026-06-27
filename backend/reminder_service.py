@@ -1,0 +1,47 @@
+from datetime import datetime
+from database.db import db
+from utils.logger import logger
+from typing import List, Dict, Any
+
+class ReminderService:
+    def __init__(self, database=db):
+        self.db = database
+
+    def list_all_reminders(self) -> List[Dict[str, Any]]:
+        """Retrieves list of all scheduled reminders from SQLite."""
+        return self.db.get_reminders()
+
+    def process_pending_reminders(self) -> int:
+        """
+        Scans SQLite database for reminders that are PENDING and whose trigger time has passed,
+        updating their status to SENT.
+        Returns the number of processed reminders.
+        """
+        now_str = datetime.now().strftime("%Y-%m-%d %H:%M")
+        logger.info(f"ReminderService: Checking pending reminders at current local time: {now_str}")
+        
+        processed_count = 0
+        reminders = self.db.get_reminders()
+        
+        for reminder in reminders:
+            if reminder["status"] == "PENDING":
+                # Check if trigger time has passed
+                # Trigger format: YYYY-MM-DD HH:MM
+                try:
+                    trigger_dt = datetime.strptime(reminder["trigger_time"], "%Y-%m-%d %H:%M")
+                    current_dt = datetime.now()
+                    
+                    if trigger_dt <= current_dt:
+                        logger.info(f"ReminderService: Dispatching reminder ID {reminder['id']} to {reminder['participant_email']}: '{reminder['text']}'")
+                        self.db.update_reminder_status(reminder["id"], "SENT")
+                        processed_count += 1
+                except Exception as e:
+                    logger.error(f"Error parsing reminder time {reminder['trigger_time']} for ID {reminder['id']}: {e}")
+                    self.db.update_reminder_status(reminder["id"], "FAILED")
+
+        if processed_count > 0:
+            logger.info(f"ReminderService: Processed {processed_count} reminders successfully.")
+        return processed_count
+
+# Instantiated service
+reminder_service = ReminderService()

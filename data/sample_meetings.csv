@@ -1,0 +1,5 @@
+title,date,start_time,end_time,participants_list,description
+Project Alpha Sync,2026-06-15,10:00,11:00,alice@example.com;bob@example.com,Weekly sync for Project Alpha.
+Marketing Brainstorming,2026-06-15,14:00,15:00,alice@example.com;charlie@example.com,Discuss Q3 campaign ideas.
+HR Catch-up,2026-06-16,11:00,11:30,bob@example.com;hr@example.com,Monthly HR checkin.
+Product Roadmap Review,2026-06-15,11:00,12:00,alice@example.com;bob@example.com;charlie@example.com,Align on upcoming roadmap milestones.
