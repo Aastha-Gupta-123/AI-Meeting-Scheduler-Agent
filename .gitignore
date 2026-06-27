@@ -1,0 +1,27 @@
+# Virtual Environment
+venv/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Environment Variables
+.env
+
+# Logs
+*.log
+
+# Database
+*.db
+database/*.db
+
+# FAISS Vector Store
+vectorstore/meeting_memory/
+
+# VS Code
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
