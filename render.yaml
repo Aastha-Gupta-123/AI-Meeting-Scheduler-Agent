@@ -2,7 +2,7 @@ services:
   - type: web
     name: ai-meeting-scheduler
     env: python
-    buildCommand: pip install -r requirements.txt
+    buildCommand: pip install -r requirements.txt; python preload.py
     startCommand: python app.py
     envVars:
       - key: PYTHON_VERSION
